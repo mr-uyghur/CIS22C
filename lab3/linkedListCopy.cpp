@@ -1,10 +1,7 @@
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
 
 
 
 #include <iostream>
-#include <iomanip>
 #include <conio.h>
 #include <string>
 #include <cstdint>
@@ -197,6 +194,165 @@ public:
     }
 };
 
+//////*** Stack ADT Class***//////////
+class Stack : SinglyLinkedList
+{
+public:
+    // Stack::LIFO(last in first out)...
 
+    void push(void *data)
+    {
+        // craete stack...
+        LinkNode *stack = new LinkNode();
+        if (head == NULL)
+        {
+            stack->data = data;
+            stack->next = NULL;
+            head = stack;
+        }
+        else
+        {
+            stack->data = data;
+            stack->next = head;
+            head = stack;
+        }
 
-#endif
+        cout << "\nPush into Stack: " << *(string *)stack->data;
+    }
+
+    void pop()
+    {
+        cout << "\nPop from Stack: " << *(string *)head->data << endl;
+        head = head->next;
+    }
+
+    void peek()
+    {
+        cout << "\nStack Peek: " << *(string *)head->data;
+    }
+
+    void Empty()
+    {
+        LinkNode *temp = head;
+        LinkNode *next;
+        while (temp != NULL)
+        {
+            next = temp->next;
+            free(temp);
+            temp = next;
+        }
+        cout << "\nStack is Empty!";
+    }
+};
+
+class Queue : SinglyLinkedList
+{
+
+public:
+    void enqueue(void *data)
+    {
+        LinkNode *queue = new LinkNode();
+        queue->data = data;
+        queue->next = NULL;
+        if (head == NULL)
+            head = queue;
+        else
+        {
+            LinkNode *temp = head;
+            while (temp->next != NULL)
+            {
+                temp = temp->next;
+            }
+            temp->next = queue;
+        }
+        cout << "\nEnqueue Data: " << *(string *)data;
+    }
+
+    void dequeue()
+    {
+        if (head == NULL)
+            cout << "\nQueue is Empty!";
+        else
+        {
+            cout << "\nDequeue Data: " << *(string *)head->data;
+            head = head->next;
+        }
+    }
+
+    void peekFront()
+    {
+        if (head == NULL)
+            cout << "\nQueue is Empty!";
+        else
+        {
+            cout << "\nPeek Front Queue: " << *(string *)head->data;
+        }
+    }
+
+    void peekRear()
+    {
+        if (head == NULL)
+            cout << "\nQueue is Empty!";
+        else
+        {
+            LinkNode *temp = head;
+            while (temp->next != NULL)
+            {
+                temp = temp->next;
+            }
+            cout << "\nPeek Rear Queue: " << *(string *)temp->data;
+        }
+    }
+
+    void Empty()
+    {
+        LinkNode *temp = head;
+        LinkNode *next;
+        while (temp != NULL)
+        {
+            next = temp->next;
+            free(temp);
+            temp = next;
+        }
+        cout << "\nQueue is Empty!";
+    }
+};
+
+// TESTING IN MAIN FUNCTION...//
+
+int main()
+{
+    cout << "\n\nLinked List Testing....";
+    head = NULL;
+    SinglyLinkedList *list = new SinglyLinkedList();
+    list->add(new int(100));
+    list->add(new int(50));
+    list->add(new int(66));
+    list->add(new int(500));
+    list->add(new int(50));
+    list->display();
+    list->Remove(new int(50));
+    list->display();
+    list->count();
+    list->search(new int(66));
+
+    cout << "\n\nStack Testing....";
+    head = NULL;
+    Stack *stack = new Stack();
+    stack->push(new string("krone"));
+    stack->push(new string("krone"));
+    stack->push(new string("krone"));
+    stack->push(new string("$$$$"));
+    stack->push(new string("$$$$"));
+    stack->pop();
+
+    cout << "\n\nQueue Testing....";
+    head = NULL;
+    Queue *queue = new Queue();
+    queue->enqueue(new string("str"));
+    queue->enqueue(new string("str2"));
+    queue->enqueue(new string("str3"));
+    queue->enqueue(new string("str4"));
+    queue->enqueue(new string("str5"));
+    queue->dequeue();
+}
