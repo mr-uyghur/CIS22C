@@ -1,22 +1,28 @@
-// Lab 04
-// Bryan Chan and Ali Halmamat  
-// The purpose of this assignment is to implement a binary tree ADT which will take in Krone objects.
-
-#ifndef BST_H
-#define BST_H
-
+/*
+ * C++ Program To Implement BST
+ */
 #include <iostream>
-#include "krone.cpp"
+#include <cstdlib>
 using namespace std;
+/*
+ * Node Declaration
+ */
+struct node
+{
+    double info;
+    struct node *left;
+    struct node *right;
+} *root;
 
-
+/*
+ * Class Declaration
+ */
 class BST
 {
 public:
-    void find(double, node **, node **);
-    void search(node *, double);
+    void find(int, node **, node **);
     void insert(node *, node *);
-    void del(double);
+    void del(int);
     void case_a(node *, node *);
     void case_b(node *, node *);
     void case_c(node *, node *);
@@ -29,20 +35,77 @@ public:
         root = NULL;
     }
 };
+/*
+ * Main Contains Menu
+ */
+int main()
+{
+    int choice, num;
+    BST bst;
+    node *temp;
+    while (1)
+    {
+        cout << "-----------------" << endl;
+        cout << "Operations on BST" << endl;
+        cout << "-----------------" << endl;
+        cout << "1.Insert Element " << endl;
+        cout << "2.Delete Element " << endl;
+        cout << "3.Inorder Traversal" << endl;
+        cout << "4.Preorder Traversal" << endl;
+        cout << "5.Postorder Traversal" << endl;
+        cout << "6.Display" << endl;
+        cout << "7.Quit" << endl;
+        cout << "Enter your choice : ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            temp = new node;
+            cout << "Enter the number to be inserted : ";
+            cin >> temp->info;
+            bst.insert(root, temp);
+        case 2:
+            if (root == NULL)
+            {
+                cout << "Tree is empty, nothing to delete" << endl;
+                continue;
+            }
+            cout << "Enter the number to be deleted : ";
+            cin >> num;
+            bst.del(num);
+            break;
+        case 3:
+            cout << "Inorder Traversal of BST:" << endl;
+            bst.inorder(root);
+            cout << endl;
+            break;
+        case 4:
+            cout << "Preorder Traversal of BST:" << endl;
+            bst.preorder(root);
+            cout << endl;
+            break;
+        case 5:
+            cout << "Postorder Traversal of BST:" << endl;
+            bst.postorder(root);
+            cout << endl;
+            break;
+        case 6:
+            cout << "Display BST:" << endl;
+            bst.display(root, 1);
+            cout << endl;
+            break;
+        case 7:
+            exit(1);
+        default:
+            cout << "Wrong choice" << endl;
+        }
+    }
+}
 
 /*
  * Find Element in the Tree
  */
-
-// for find()
-    // Pre:      item - the given user input which is used to compare to the
-    //                  contents of the binary search tree.
-    //           par - a double pointer from the node class (parent node)
-    //           loc - a double pointer from the node class (location of the node)
-    // Post:     Used as a helper function for the delete method, but does not affect 
-    //           the content of the tree.
-    // Return:   void (returns nothing, searches through the entire binary tree)
-void BST::find(double item, node **par, node **loc)
+void BST::find(int item, node **par, node **loc)
 {
     node *ptr, *ptrsave;
     if (root == NULL)
@@ -83,11 +146,6 @@ void BST::find(double item, node **par, node **loc)
 /*
  * Inserting Element into the Tree
  */
-// for insert()
-    // Pre:      tree - a pointer to the binary tree
-    //           newnode - a pointer to the new node
-    // Post:     Affects the contents of the BST by adding a new node
-    // Return:   void (returns nothing, just adds a new node to the binary tree)
 void BST::insert(node *tree, node *newnode)
 {
     if (root == NULL)
@@ -135,42 +193,11 @@ void BST::insert(node *tree, node *newnode)
         }
     }
 }
+
 /*
-search method
-
-*/
-
-// for search()
-    // Pre:      tree - a pointer to the binary tree
-    //           item - the given user input which is used for comparison
-    // Post:     Does not affect the contents of the BST. It just searches
-    //           through the entire BST to check and see if the input is found.
-    // Return:   void (displays a message on whether or not the input was found
-    //                 in the BST)
-void BST::search(node* tree, double item)
-{
-    if (tree == NULL)
-    {
-        cout << "Element not found in tree." << endl;
-        return;
-    }
-    if (tree->info == item)
-    {
-        cout << "Element found in tree." << endl;
-        return;
-    }
-    if (tree->info > item)
-        search(tree->left, item);
-    else
-        search(tree->right, item);
-}
-
-
-// for del()
-    // Pre:      item - the given user input
-    // Post:     Affects the contents of the BST by removing the input from the BST if present
-    // Return:   void (returns nothing, but if node is empty or if the item is not found in the BST, a message is displayed)
-void BST::del(double item)
+ * Delete Element from the tree
+ */
+void BST::del(int item)
 {
     node *parent, *location;
     if (root == NULL)
@@ -198,11 +225,6 @@ void BST::del(double item)
 /*
  * Case A
  */
- // for case_a()
-    // Pre:      par - a pointer from the node class
-    //           loc - a pointer from the node class
-    // Post:     Affects the contents of the BST by checking if parent node is NULL. 
-    // Return:   void (returns nothing, checks if parent node is empty, which sets root to NULL.)
 void BST::case_a(node *par, node *loc)
 {
     if (par == NULL)
@@ -221,11 +243,6 @@ void BST::case_a(node *par, node *loc)
 /*
  * Case B
  */
- // for case_b()
-    // Pre:      par - a pointer from the node class
-    //           loc - a pointer from the node class
-    // Post:     Affects the contents of the BST by checking if parent node is NULL. 
-    // Return:   void (returns nothing, checks if parent node is empty, which sets root to NULL.)
 void BST::case_b(node *par, node *loc)
 {
     node *child;
@@ -249,11 +266,6 @@ void BST::case_b(node *par, node *loc)
 /*
  * Case C
  */
-  // for case_c()
-    // Pre:      par - a pointer from the node class
-    //           loc - a pointer from the node class
-    // Post:     Affects the contents of the BST by checking if parent node is NULL. 
-    // Return:   void (returns nothing, checks if parent node is empty, which sets root to NULL.)
 void BST::case_c(node *par, node *loc)
 {
     node *ptr, *ptrsave, *suc, *parsuc;
@@ -288,10 +300,6 @@ void BST::case_c(node *par, node *loc)
 /*
  * Pre Order Traversal
  */
- // for preorder()
-    // Pre:      ptr - a pointer from the node class
-    // Post:     Doesn't affect the content of the BST. It only outputs the nodes from least to greatest.
-    // Return:   void (returns nothing, but outputs the nodes from least to greatest.)
 void BST::preorder(node *ptr)
 {
     if (root == NULL)
@@ -309,10 +317,6 @@ void BST::preorder(node *ptr)
 /*
  * In Order Traversal
  */
- // for inorder()
-    // Pre:      ptr - a pointer from the node class
-    // Post:     Doesn't affect the content of the BST.
-    // Return:   void (returns nothing)
 void BST::inorder(node *ptr)
 {
     if (root == NULL)
@@ -331,10 +335,6 @@ void BST::inorder(node *ptr)
 /*
  * Postorder Traversal
  */
- // for inorder()
-    // Pre:      ptr - a pointer from the node class
-    // Post:     Doesn't affect the content of the BST. It only outputs the nodes from greatest to least.
-    // Return:   void (returns nothing, but outputs the nodes from greatest to least.)
 void BST::postorder(node *ptr)
 {
     if (root == NULL)
@@ -350,11 +350,9 @@ void BST::postorder(node *ptr)
     }
 }
 
- // for display()
-    // Pre:      ptr - a pointer from the node class
-    //           level - a int var representing the level of the node
-    // Post:     Doesn't affect the content of the BST. It only outputs all of the nodes from the BST.
-    // Return:   void (returns nothing, but outputs all of the nodes from the BST)
+/*
+ * Display Tree Structure
+ */
 void BST::display(node *ptr, int level)
 {
     int i;
@@ -367,11 +365,9 @@ void BST::display(node *ptr, int level)
         else
         {
             for (i = 0; i < level; i++)
-                cout << "        ";
+                cout << "       ";
         }
-        cout << "Kr " << ptr->info;
+        cout << ptr->info;
         display(ptr->left, level + 1);
     }
 }
-
-#endif
